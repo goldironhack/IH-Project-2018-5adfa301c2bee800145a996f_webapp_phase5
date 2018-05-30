@@ -752,8 +752,18 @@ function createTableCrimes(data) {
         for (let i = 0; i < data.length; i++) {
             if("latitude" in data[i] && "longitude" in data[i]) {
                 var row = table.insertRow(0);
+                var dist = '';
+                for (var j in main_data[boro]) {
+                    for (let k = 0; k < main_data[boro][j].poly.length; k++) {
+                        if (google.maps.geometry.poly.containsLocation(point, main_data[boro][j].poly[k] )) {
+                            main_data[boro][j].crimes.push(data[i]);
+                            dist = j;
+                            break;
+                        }
+                    }
+                }
                 row.insertCell(0).innerHTML = data[i].boro_nm;
-                row.insertCell(1).innerHTML = data[i].boro_nm;
+                row.insertCell(1).innerHTML = data[i].dist;
                 row.insertCell(2).innerHTML = data[i].ofns_desc;
                 row.insertCell(3).innerHTML = data[i].pd_desc;
                 row.insertCell(4).innerHTML = data[i].law_cat_cd;
@@ -761,14 +771,7 @@ function createTableCrimes(data) {
                 row.insertCell(6).innerHTML = data[i].prem_typ_desc;
                 var point = new google.maps.LatLng(data[i].latitude, data[i].longitude);
                 var boro = getBORO(data[i].boro_nm)
-                for (var j in main_data[boro]) {
-                    for (let k = 0; k < main_data[boro][j].poly.length; k++) {
-                        if (google.maps.geometry.poly.containsLocation(point, main_data[boro][j].poly[k] )) {
-                            main_data[boro][j].crimes.push(data[i]);
-                            break;
-                        }
-                    }
-                }
+                
             }
         }
     } catch (e) {
