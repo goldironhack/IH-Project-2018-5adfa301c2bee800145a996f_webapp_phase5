@@ -517,7 +517,7 @@ function loadJSON(path, success) {
 /************************************************************
  *          FUNCTIONS TO LOAD CLUSTERS AND MARKERS          *
  ************************************************************/
-var mapCrimes;
+var heatmap;
 function showUniversity(){
     if ( document.getElementById("university").checked === true ){
         university.setMap(map);
@@ -582,20 +582,18 @@ function showHouses(){
 function showCrimes(){
     try {
         if (document.getElementById("crime").checked === true) {
-            if (NY_crimes.markers == null){
+            var positions = [];
                 var data = NY_crimes.data;
-                var positions = [];
                 for (let i = 0; i < data.length; i++) {
                     if ("latitude" in data[i] && "longitude" in data[i]) {
                         positions.push(new google.maps.LatLng(data[i].latitude, data[i].longitude));
                     }
                 }
-                mapCrimes = new google.maps.visualization.HeatmapLayer({data: positions, map: map, opacity: 1});
-            }
-            mapCrimes.setMap(map);
+                heatmap = new google.maps.visualization.HeatmapLayer({data: positions, map: map, opacity: 1});
+            heatmap.setMap(map);
         } else {
-            if (mapCrimes != undefined)
-                mapCrimes.setMap(null);
+            if (heatmap != undefined)
+                heatmap.setMap(null);
         }
     } catch (e) {
         alert("ERROR LOADING CRIMES: "+e);
@@ -1798,6 +1796,8 @@ function getText(boro) {
             return "Staten Island";
     }
 }
+
+//Taken from one of the examples of d3.js
 
 function histoGram(fD, id){
     var hG={},    hGDim = {t: 90, r: 0, b: 30, l: 0};
