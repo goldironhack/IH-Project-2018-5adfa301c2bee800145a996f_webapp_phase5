@@ -1253,7 +1253,7 @@ function _getTop10(data){
         var parameter = document.getElementById('parameterR');
         switch (parameter.value) {
             case '0':
-                document.getElementById("TITLE").innerText = "District";
+                document.getElementById("TITLE").innerText = "Distance";
                 ar = rankByDistance(data);
                 break;
             case '1':
